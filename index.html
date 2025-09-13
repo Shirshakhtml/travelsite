@@ -3,73 +3,111 @@
 <head>
   <meta charset="UTF-8">
   <title>Gateway Directory</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body { margin:0; font-family:Arial,sans-serif; background:#fafafa; color:#333; }
+    header { background:#222; color:#fff; padding:1rem; position:sticky; top:0; }
+    header nav a { color:#fff; margin-right:1rem; text-decoration:none; }
+    .container { max-width:1100px; margin:auto; padding:1rem; }
+    .search-box { text-align:center; margin:2rem 0; }
+    .search-box input { width:60%; padding:.7rem; border:1px solid #ccc; border-radius:4px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1rem; }
+    .card { background:#fff; border:1px solid #ddd; border-radius:8px; padding:1rem; cursor:pointer; transition:.2s; }
+    .card:hover { box-shadow:0 2px 8px rgba(0,0,0,.1); }
+    .card h3 { margin-top:0; }
+    .footer { text-align:center; padding:2rem; background:#222; color:#fff; margin-top:2rem; }
+    /* Modal */
+    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.7); align-items:center; justify-content:center; }
+    .modal-content { background:#fff; padding:2rem; border-radius:8px; max-width:600px; width:90%; }
+    .modal-close { float:right; cursor:pointer; font-size:1.2rem; }
+  </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <header class="navbar">
+  <header>
     <div class="container">
       <h1>Gateway Directory</h1>
       <nav>
-        <a href="#" onclick="showSection('home')">Home</a>
-        <a href="#" onclick="showSection('listings')">Listings</a>
-        <a href="#" onclick="showSection('blog')">Blog</a>
-        <a href="#" onclick="showSection('contact')">Contact</a>
+        <a href="#home">Home</a>
+        <a href="#blog">Blog</a>
+        <a href="#contact">Contact</a>
       </nav>
     </div>
   </header>
 
-  <!-- Sections -->
-  <main>
-    <!-- Home -->
-    <section id="home" class="section active">
-      <div class="hero">
-        <h2>Find and Compare Gateways</h2>
-        <input type="text" id="searchBox" placeholder="Search gateways...">
-        <div class="grid" id="listingGrid"></div>
-      </div>
-    </section>
+  <div class="container">
+    <div class="search-box">
+      <input type="text" id="searchBox" placeholder="Search gateways...">
+    </div>
 
-    <!-- Listings -->
-    <section id="listings" class="section">
-      <h2>All Listings</h2>
-      <div class="grid" id="allListings"></div>
-    </section>
+    <div class="grid" id="listingGrid"></div>
 
-    <!-- Listing Detail -->
-    <section id="listingDetail" class="section">
-      <h2 id="detailTitle"></h2>
-      <p id="detailDesc"></p>
-      <button onclick="showSection('listings')">Back to Listings</button>
-    </section>
+    <h2 id="blog">Blog</h2>
+    <div class="grid" id="blogGrid"></div>
 
-    <!-- Blog -->
-    <section id="blog" class="section">
-      <h2>Blog</h2>
-      <div class="grid" id="blogGrid"></div>
-    </section>
+    <h2 id="contact">Contact</h2>
+    <form>
+      <label>Name<br><input type="text" required></label><br><br>
+      <label>Email<br><input type="email" required></label><br><br>
+      <label>Message<br><textarea rows="5" required></textarea></label><br><br>
+      <button type="submit">Send</button>
+    </form>
+  </div>
 
-    <!-- Blog Post -->
-    <section id="post" class="section">
-      <h2 id="postTitle"></h2>
-      <p id="postContent"></p>
-      <button onclick="showSection('blog')">Back to Blog</button>
-    </section>
+  <div class="footer">© 2025 Gateway Directory</div>
 
-    <!-- Contact -->
-    <section id="contact" class="section">
-      <h2>Contact Us</h2>
-      <form>
-        <label>Name<br><input type="text" required></label><br><br>
-        <label>Email<br><input type="email" required></label><br><br>
-        <label>Message<br><textarea rows="5" required></textarea></label><br><br>
-        <button type="submit">Send</button>
-      </form>
-    </section>
-  </main>
+  <!-- Modal -->
+  <div class="modal" id="detailModal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal()">✖</span>
+      <h2 id="modalTitle"></h2>
+      <p id="modalDesc"></p>
+    </div>
+  </div>
 
-  <!-- Footer -->
-  <footer class="footer">© 2025 Gateway Directory</footer>
-  <script src="script.js"></script>
+  <script>
+    const listings = [
+      { id:1, title:"Gateway Alpha", desc:"Fast and reliable performance.", details:"Alpha offers 99.9% uptime and 24/7 support." },
+      { id:2, title:"Gateway Beta", desc:"Low latency for real-time apps.", details:"Beta is optimized for trading and streaming workloads." },
+      { id:3, title:"Gateway Gamma", desc:"Secure and scalable solution.", details:"Gamma includes encryption and horizontal scaling." }
+    ];
+    const posts = [
+      { id:1, title:"What is a Gateway?", excerpt:"Understand basics of gateways...", content:"A gateway connects two networks with different protocols, allowing secure communication." },
+      { id:2, title:"5 Tips for Choosing a Gateway", excerpt:"How to pick the right one...", content:"Consider speed, security, scalability, uptime, and support when choosing a gateway." }
+    ];
+
+    function renderListings(filter="") {
+      const grid=document.getElementById("listingGrid");
+      grid.innerHTML="";
+      listings.filter(l=>l.title.toLowerCase().includes(filter.toLowerCase()))
+        .forEach(l=>{
+          grid.innerHTML+=`<div class="card" onclick="showModal(${l.id})">
+            <h3>${l.title}</h3><p>${l.desc}</p></div>`;
+        });
+    }
+
+    function renderBlog() {
+      const grid=document.getElementById("blogGrid");
+      grid.innerHTML="";
+      posts.forEach(p=>{
+        grid.innerHTML+=`<div class="card" onclick="alert('${p.content}')">
+          <h3>${p.title}</h3><p>${p.excerpt}</p></div>`;
+      });
+    }
+
+    function showModal(id) {
+      const item=listings.find(l=>l.id===id);
+      if(!item) return;
+      document.getElementById("modalTitle").textContent=item.title;
+      document.getElementById("modalDesc").textContent=item.details;
+      document.getElementById("detailModal").style.display="flex";
+    }
+    function closeModal(){ document.getElementById("detailModal").style.display="none"; }
+
+    document.getElementById("searchBox").addEventListener("input",e=>{
+      renderListings(e.target.value);
+    });
+
+    renderListings();
+    renderBlog();
+  </script>
 </body>
 </html>
