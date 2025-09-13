@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gateway Directory</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container">
+      <h1>Gateway Directory</h1>
+      <nav>
+        <a href="#" onclick="showSection('home')">Home</a>
+        <a href="#" onclick="showSection('listings')">Listings</a>
+        <a href="#" onclick="showSection('blog')">Blog</a>
+        <a href="#" onclick="showSection('contact')">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Sections -->
+  <main>
+    <!-- Home -->
+    <section id="home" class="section active">
+      <div class="hero">
+        <h2>Find and Compare Gateways</h2>
+        <input type="text" id="searchBox" placeholder="Search gateways...">
+        <div class="grid" id="listingGrid"></div>
+      </div>
+    </section>
+
+    <!-- Listings -->
+    <section id="listings" class="section">
+      <h2>All Listings</h2>
+      <div class="grid" id="allListings"></div>
+    </section>
+
+    <!-- Listing Detail -->
+    <section id="listingDetail" class="section">
+      <h2 id="detailTitle"></h2>
+      <p id="detailDesc"></p>
+      <button onclick="showSection('listings')">Back to Listings</button>
+    </section>
+
+    <!-- Blog -->
+    <section id="blog" class="section">
+      <h2>Blog</h2>
+      <div class="grid" id="blogGrid"></div>
+    </section>
+
+    <!-- Blog Post -->
+    <section id="post" class="section">
+      <h2 id="postTitle"></h2>
+      <p id="postContent"></p>
+      <button onclick="showSection('blog')">Back to Blog</button>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section">
+      <h2>Contact Us</h2>
+      <form>
+        <label>Name<br><input type="text" required></label><br><br>
+        <label>Email<br><input type="email" required></label><br><br>
+        <label>Message<br><textarea rows="5" required></textarea></label><br><br>
+        <button type="submit">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">© 2025 Gateway Directory</footer>
+  <script src="script.js"></script>
+</body>
+</html>
